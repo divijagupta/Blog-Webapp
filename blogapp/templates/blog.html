@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{%block title %}
+<title>{{blog.title}}</title>
+{%endblock%}
+{%block body%}
+</div>
+   <div class="upvote" data-index={{blog.pk}}><i class="fas fa-chevron-up fa-4x"></i><p>UPVOTE</div>
+   <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+    <h2 class="blog-title">{{blog.title}}</h2>
+      <p class="tags-head">
+        <span class="tags">{{blog.date}}</span>
+        <span class="tags">{{blog.base_category.category}}</span>
+        <span class="tags">{{blog.read_time_minutes}}</span>
+        <span class="tags">{{blog.upvote}}</span></p>
+    <img class="blog-image img-responsive" src={{blog.img.url}}/>
+    <div class="content">
+      <p>{% autoescape off %}
+         {{blog.body}}
+        {% endautoescape %}
+      </p>
+          <strong class="author">By: {{blog.author.author_user.first_name}} {{blog.author.author_user.last_name}}</strong>
+    </div>
+     <div class="comment-box">
+      <h3>Comments</h3>
+       {% for comments in blog.comment_set.all%}
+       <div class="comment-box-inner">
+       <strong class ="user">{{comments.user_commented.first_name}} {{comments.user_commented.last_name}} <i class="far fa-comment"></i></strong>
+          <p class="comment">{{comments.body}}
+          </p>
+          </div >
+          {%endfor%}
+      </div>
+           <div class="review-form">
+        <h3>Leave us a comment</h3>
+        {% if user.is_authenticated %}
+       <div class="form-container">
+          <form class="form-comment" action={%url "comment" blog.pk %} method="post" id="commentForm">  
+             {% csrf_token %}
+                  <input type="text" name="body" class="form-control" id="name" placeholder="Comment">
+               <button type="submit" class="submit-comment"><i class="fab fa-telegram-plane fa-5x"></i><p>COMMENT</button>
+             
+                          
+            </form>
+        </div>
+        {%else%}
+           <a href={%url "signin" %} class="btn btn-default normal-cta">Login</a>
+
+                       
+        {%endif%}
+      </div>
+    </div>
+    <div class="col-md-4 list-box">
+      <h3 class="trending">Trending blogs</h3>
+      <ul class="list-unstyled treding">
+        {%for blogs in trending%}
+         <li class="list-element">
+          <i class="fas fa-chevron-right"></i> {{blogs.title}}
+         </li>
+         {%endfor%}
+      </ul>
+
+
+
+    </div>
+   </div>
+  </div>
+ </div>
+  {%endblock%}

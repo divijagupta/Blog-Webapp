@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{%block title %}
+<title>lorem sum dolor |  {{category.category|upper}} </title>
+{%endblock%}
+{%block body%}
+      <h3 class="center-category">{{category.category|lower}}  blogs</h3>
+     <div class="row">
+      {% for blog in category.blogpost_set.all %}
+            <div class="col-md-4">
+              <a href={%url "blog" pk=blog.id %}>
+                  <div class="box">
+                    <img class="img-responsive" src={{blog.img.url}} >                    
+                      <div class="texttag">
+                 <h3 >{{blog.title}}</h3>
+                 <p >{{blog.body|slice:"200"}}....</p>
+            </div>
+         </div>
+       </a>
+       </div>
+       {%endfor%}
+     </div>
+
+   {%endblock%}
